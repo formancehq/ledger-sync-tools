@@ -11,5 +11,9 @@ nano .env
 ## Running
 
 ```
-yarn src/main.ts
+# Create a log file snapshot (from configured source ledger)
+yarn snapshot
+
+# Restore the log snapshot (to configured destination ledger)
+yarn restore
 ```

@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "snapshot": "ts-node src/main.ts snapshot",
+    "restore": "ts-node src/main.ts restore"
+  },  
   "dependencies": {
     "@formance/formance-sdk": "^2.4.4",
     "@formance/formance-sdk-oauth": "^1.1.1",
