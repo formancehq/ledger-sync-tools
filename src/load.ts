@@ -40,6 +40,15 @@ const logEntriesToBulk = (entries: V2Log[]) : V2BulkElement[] => {
         data,
       });
     }
+
+    if (log.type === V2LogType.RevertedTransaction) {
+      bulk.push({
+        action: 'REVERT_TRANSACTION',
+        data: {
+          id: BigInt(log.data['revertedTransactionID']),
+        }
+      });
+    }
   }
 
   return bulk;

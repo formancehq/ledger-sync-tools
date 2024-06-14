@@ -12,6 +12,10 @@ type Transaction = {
   script: string;
 };
 
+type Revert = {
+  txid: number;
+}
+
 const transaction = (opts: Transaction) : Action => {
   return async (ledger: string, client: SDK) => {
     for (let i = 0; i < opts.times; i++) {
@@ -28,6 +32,15 @@ const transaction = (opts: Transaction) : Action => {
   };
 };
 
+const revert = (opts: Revert) : Action => {
+  return async (ledger: string, client: SDK) => {
+    await client.ledger.v2RevertTransaction({
+      ledger,
+      id: BigInt(opts.txid),
+    });
+  };
+}
+
 (async () => {
   const client = new Formance({
     serverURL: process.env['TEST_ENDPOINT'] || '',
@@ -38,7 +51,7 @@ const transaction = (opts: Transaction) : Action => {
     }),
   });
 
-  const ledger = 'ledger-test-002';
+  const ledger = 'ledger-test-003';
 
   try {
     await client.ledger.v2CreateLedger({
@@ -64,6 +77,10 @@ const transaction = (opts: Transaction) : Action => {
 
     if (type === 'transaction') {
       actions.push(transaction(content as Transaction));
+    }
+
+    if (type === 'revert') {
+      actions.push(revert(content as Revert));
     }
   }
 
