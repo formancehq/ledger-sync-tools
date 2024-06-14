@@ -55,7 +55,8 @@ export const restore = async (
       ledger: dest.ledger,
     });
   } catch (e) {
-    console.log(e);
+    console.log(`[init] ledger ${dest.ledger} already exists`);
+    process.exit(1);
   }
 
   let [pc, ps, total] = [0, 10, Math.ceil(log.size() / 10)];
