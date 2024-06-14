@@ -24,16 +24,6 @@ const logEntriesToBulk = (entries: V2Log[]) : V2BulkElement[] => {
       const data : V2PostTransaction = {
         timestamp: new Date(log.data.transaction['timestamp']),
         reference: log.data.transaction['reference'] || undefined,
-        // postings: [
-        //   ...log.data.transaction['postings'].map((e: Posting) => {
-        //     return {
-        //       source: e.source,
-        //       destination: e.destination,
-        //       amount: BigInt(e.amount),
-        //       asset: e.asset,
-        //     };
-        //   }),
-        // ],
         script: {
           plain: txScript(log.data.transaction),
         },

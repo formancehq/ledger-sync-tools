@@ -1,0 +1,10 @@
+- config:
+    name: "Test 001"
+    ledger: "test-ledger-001"
+- transaction:
+    times: 100
+    script: |
+      send [USD/2 100] (
+        source = @users:1234 allowing unbounded overdraft
+        destination = @platform:fees
+      )

@@ -5,16 +5,19 @@
   "license": "MIT",
   "scripts": {
     "snapshot": "ts-node src/main.ts snapshot",
-    "restore": "ts-node src/main.ts restore"
-  },  
+    "restore": "ts-node src/main.ts restore",
+    "test": "ts-node tests/main.ts"
+  },
   "dependencies": {
     "@formance/formance-sdk": "^2.4.4",
     "@formance/formance-sdk-oauth": "^1.1.1",
     "@types/dotenv": "^8.2.0",
     "@types/node": "^20.14.2",
+    "@types/yaml": "^1.9.7",
     "axios": "^1.7.2",
     "dotenv": "^16.4.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "yaml": "^2.4.5"
   }
 }

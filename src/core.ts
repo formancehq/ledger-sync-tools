@@ -1,5 +1,6 @@
 import { SDK } from "@formance/formance-sdk";
 import { V2Log } from "@formance/formance-sdk/sdk/models/shared";
+import { writeFileSync } from "fs";
 
 export type Source = {
   ledger: string;
@@ -32,6 +33,7 @@ export const NewLog = (entries : V2Log[]) : Log => {
     },
     writeFile: (filename : string) => {
       const data = log.entries.map((l) => JSON.stringify(l)).join('\n');
+      writeFileSync(filename, data);
     },
     size: () => {
       return log.entries.length;
