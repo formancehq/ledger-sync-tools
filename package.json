@@ -1,0 +1,16 @@
+{
+  "name": "ledger-tools",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@formance/formance-sdk": "^2.4.4",
+    "@formance/formance-sdk-oauth": "^1.1.1",
+    "@types/dotenv": "^8.2.0",
+    "@types/node": "^20.14.2",
+    "axios": "^1.7.2",
+    "dotenv": "^16.4.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
