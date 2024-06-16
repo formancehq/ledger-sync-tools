@@ -6,6 +6,7 @@ import { Log, NewLog } from './core';
 import { extract } from './extract';
 import { restore } from './load';
 import { clients } from './client';
+import { state } from './cmp';
 
 (async () => {
   for (const key of [
@@ -49,5 +50,14 @@ import { clients } from './client';
       ledger: process.env['DEST_LEDGER'] || '',
       client: destClient,
     });
+  }
+
+  if (cmd === 'validate') {
+    const states = await Promise.all([
+      state(srcClient, process.env['SRC_LEDGER'] || ''),
+      state(destClient, process.env['DEST_LEDGER'] || ''),
+    ]);
+
+    console.log(states);
   }
 })();
