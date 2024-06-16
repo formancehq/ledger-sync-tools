@@ -25,7 +25,7 @@ const logEntriesToBulk = (entries: V2Log[]) : V2BulkElement[] => {
         timestamp: new Date(log.data.transaction['timestamp']),
         reference: log.data.transaction['reference'] || undefined,
         script: {
-          plain: txScript(log.data.transaction),
+          plain: txScript(log.data.transaction, log.data.accountMetadata),
         },
         metadata: {
           ...log.data.transaction['metadata'],

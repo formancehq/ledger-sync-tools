@@ -4,7 +4,7 @@ import { writeFileSync } from "fs";
 
 (BigInt.prototype as any).toJSON = function() {
   return this.toString()
-} 
+}
 
 async function* _logs(src: Source) : AsyncGenerator<V2Log[]> {
   let cursor = '';

@@ -1,9 +1,9 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { SDK as Formance, SDK } from '@formance/formance-sdk';
-import { createAuthorizationProvider } from '@formance/formance-sdk-oauth';
+import { SDK } from '@formance/formance-sdk';
 import { readFileSync } from "fs";
 import YAML from "yaml";
+import { client } from './client';
 
 type Action = (ledger: string, client: SDK) => any;
 
@@ -42,16 +42,7 @@ const revert = (opts: Revert) : Action => {
 }
 
 (async () => {
-  const client = new Formance({
-    serverURL: process.env['TEST_ENDPOINT'] || '',
-    authorization: createAuthorizationProvider({
-        endpointUrl: process.env['TEST_ENDPOINT'] || '',
-        clientId: process.env['TEST_CLIENT_ID'] || '',
-        clientSecret: process.env['TEST_CLIENT_SECRET'] || '',
-    }),
-  });
-
-  const ledger = 'ledger-test-003';
+  const ledger = 'ledger-test-005';
 
   try {
     await client.ledger.v2CreateLedger({
