@@ -52,12 +52,20 @@ import { state } from './cmp';
     });
   }
 
-  if (cmd === 'validate') {
+  if (cmd === 'verify') {
     const states = await Promise.all([
       state(srcClient, process.env['SRC_LEDGER'] || ''),
       state(destClient, process.env['DEST_LEDGER'] || ''),
     ]);
 
     console.log(states);
+
+    if (states[0].estimatedHash !== states[1].estimatedHash) {
+      console.log('[verify] hashes do not match');
+      process.exit(1);
+    }
+
+    console.log('[verify] success: hashes verified and matching');
+    console.log('[verify] warning: this does not guarantee that the ledgers are identical');
   }
 })();

@@ -6,7 +6,7 @@
   "scripts": {
     "snapshot": "ts-node src/main.ts snapshot",
     "restore": "ts-node src/main.ts restore",
-    "validate": "ts-node src/main.ts validate",
+    "verify": "ts-node src/main.ts verify",
     "test:gen": "ts-node test/gendata.ts",
     "test": "ts-node test/main.ts"
   },

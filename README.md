@@ -16,4 +16,7 @@ yarn snapshot
 
 # Restore the log snapshot (to configured destination ledger)
 yarn restore
+
+# Verify match (between configured src and dest)
+yarn verify
 ```
