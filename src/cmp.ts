@@ -65,6 +65,7 @@ export const state = async (
   client: SDK,
   ledger: string
 ) => {
+  console.log(`[state] fetching state for ledger ${ledger}`);
   const _stats = await client.ledger.v2ReadStats({
     ledger,
   });

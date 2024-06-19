@@ -4,7 +4,7 @@ dotenv.config();
 import { readFileSync } from 'fs';
 import { Log, NewLog } from './core';
 import { extract } from './extract';
-import { restore } from './load';
+import { Context, restore } from './load';
 import { clients } from './client';
 import { state } from './cmp';
 
@@ -44,12 +44,25 @@ import { state } from './cmp';
 
   if (cmd === 'restore') {
     const filename = `log-${process.env['SRC_LEDGER'] || ''}.json`;
+    
     const _log = readFileSync(filename).toString().split('\n').map((l) => JSON.parse(l));
     const log : Log = NewLog(_log);
+    
+    const context : Context = {
+      txid: 0,
+    }
+
+    if (process.env['TX_SEQ_GAP']) {
+      context.txSeqGap = process.env['TX_SEQ_GAP']
+        .split(';')
+        .map(s => s.split(',').map(s => parseInt(s)))
+        .map(([start, end]) => [start, end]);
+    }
+
     await restore(log, {
       ledger: process.env['DEST_LEDGER'] || '',
       client: destClient,
-    });
+    }, context);
   }
 
   if (cmd === 'verify') {
