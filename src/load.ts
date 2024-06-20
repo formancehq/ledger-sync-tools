@@ -16,7 +16,7 @@ const logEntriesToBulk = (entries: V2Log[], context: Context) : V2BulkElement[] 
       bulk.push({
         action: 'ADD_METADATA',
         data: {
-          targetId: `${log.data['targetId']}`,
+          targetId: log.data['targetType'] === 'transaction' ? BigInt(log.data['targetId']) : log.data['targetId'],
           targetType: log.data['targetType'],
           metadata: {
             ...log.data['metadata'],
@@ -118,23 +118,37 @@ export const restore = async (
 
     console.log(`[sync] pushing log page [${pc}]`); 
     try {
-      const res = await dest.client.ledger.v2CreateBulk({
-        ledger: dest.ledger,
-        requestBody: bulk,
-      });
-      console.log(`[sync] pushed log page [${pc}] [res=${res.statusCode}]`);
-      for (const [key, entry] of (res.v2BulkResponse?.data || []).entries()) {
-        if (entry.responseType === "ERROR") {
-          console.log(entry);
-          console.log(page[key]);
-          console.log(bulk[key]);
-          process.exit(1);
+      if (bulk[0].action === "ADD_METADATA" && bulk[0].data?.targetType === "TRANSACTION") {
+        const res = await dest.client.ledger.v2AddMetadataOnTransaction({
+          id: BigInt(bulk[0].data.targetId),
+          ledger: dest.ledger,
+          requestBody: bulk[0].data.metadata,
+        });
+
+        console.log(`[sync] pushed log page [${pc}] [res=${res.statusCode}]`);
+      } else {
+        const res = await dest.client.ledger.v2CreateBulk({
+          ledger: dest.ledger,
+          requestBody: bulk,
+        });
+  
+        console.log(`[sync] pushed log page [${pc}] [res=${res.statusCode}]`);
+  
+        for (const [key, entry] of (res.v2BulkResponse?.data || []).entries()) {
+          if (entry.responseType === "ERROR") {
+            console.log(entry);
+            console.log(page[key]);
+            console.log(bulk[key]);
+            process.exit(1);
+          }
         }
       }
     } catch (e) {
       console.log(`[sync] failed to push log page [${pc}]`);
       writeFileSync('debug-bulk-page.json', JSON.stringify(bulk, null, 2));
       writeFileSync('debug-log-page.json', JSON.stringify(page, null, 2));
+      console.log(e);
+      process.exit(1);
     }
     pc++;
   }

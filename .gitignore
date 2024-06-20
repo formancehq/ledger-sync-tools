@@ -3,3 +3,4 @@ node_modules
 src/fill.ts
 
 log-*.json
+debug-*.json
